@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1><u>TIC TAC TOE</u></h1>
+    <div class="container">
+        <div class="tictactoe">
+
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+        </div>
+    </div>
+
+    <h3 class="msg">Winner</h3>
+    <button id="btn-reset">Reset Game</button>
+    <button id="btn-newgame">New Game</button>
+
+    <script>
+        let btnboxes = document.querySelectorAll(".box");
+        let msg = document.querySelector(".msg");
+        let btn_reset = document.getElementById("btn-reset");
+        let btn_newgame = document.getElementById("btn-newgame");
+        let turnO = true;
+
+        btnboxes.forEach((selectbox) => {       
+            selectbox.addEventListener("click", () => {
+                if (turnO === true) {
+                    selectbox.innerText = "O";
+                    selectbox.style.backgroundColor = "lightgreen";
+                    turnO = false;
+                } else {
+                    selectbox.innerText = "X";
+                    selectbox.style.backgroundColor = "pink";
+                    turnO = true;
+                }
+                selectbox.disabled = true;
+                checkWinner();
+            });
+        });
+
+        const winPatterns = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        let checkWinner = () => {
+            for (let num of winPatterns) {
+                let value1 = btnboxes[num[0]].innerText,
+                    value2 = btnboxes[num[1]].innerText,
+                    value3 = btnboxes[num[2]].innerText;
+                
+                if (value1 !== "" && value2 !== "" && value3 !== "") {
+                    if (value1 === value2 && value2 === value3) {
+                        console.log("Winner: " + value1);
+                        msg.innerText = `Winner ${value1}`;
+                        disabledboxes();
+                    }
+                }
+            }
+        };
+
+        let disabledboxes = () => {
+            for (const box of btnboxes) {
+                box.disabled = true;
+            }
+        };
+
+        let enabledboxes = () => {
+            for (let box of btnboxes) {
+                turnO = true;
+                box.disabled = false;
+                box.innerText = "";
+                box.style.backgroundColor = "white";
+                msg.innerText = "Winner";
+            }
+        };
+
+        btn_reset.addEventListener("click", enabledboxes);
+        btn_newgame.addEventListener("click", enabledboxes);
+    </script>
+</body>
+</html>
